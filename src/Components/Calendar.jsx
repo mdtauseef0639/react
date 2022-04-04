@@ -1,26 +1,50 @@
 import React, { useState } from 'react'
+import Days from "./Days"
+import Weekdays from './Weekdays';
 
-export default function App() {
+export default function Calendar() {
     
     const d = new Date()
+    
+
    
     
-    const months = [ "January" , "February" , "March" , "April" , "May" , "June" , "July" , "August" , "September" , "October" , "November" , "December"];
+    const months = [ "January" ,"February" , "March" , "April" , "May" , "June" , "July" , "August" , "September" , "October" , "November" , "December"];
     
     const [date,setDate] = useState({
         month:d.getMonth(),
         year:d.getFullYear()
-    }) 
-
+    })
+    
+    const firstDayIndex=new Date(date.year,date.month,1).getDay()
+    console.log(firstDayIndex)
     const lastDay =  new Date(date.year,date.month+1,0).getDate();
+    const prevLastDay = new Date(date.year,date.month,0).getDate();
+    const lastDayIndex = new Date(date.year,date.month+1,0).getDay();
 
-   const days = []
+    const nextDay = 7-lastDayIndex-1;
+    
 
-   for(let i=1;i<lastDay;i++)
+
+    const prevDays = []
+    const days = []
+    const nextDays = []
+
+
+   
+
+    for(let x = firstDayIndex;x>0;x--)
+    {
+        prevDays.push(" ")
+    }
+
+   for(let i=1;i<lastDay+1;i++)
    {
        days.push(i)
    }
-   console.log(days)
+
+   
+   
     
     function handleLeft()
     {
@@ -77,46 +101,9 @@ export default function App() {
                 </div>
                 <i className="fas fa-angle-right next" onClick={handleRight}></i>
             </div>
-            <div className="weekdays">
-                <div>Sun</div>
-                <div>Mon</div>
-                <div>Tue</div>
-                <div>Wed</div>
-                <div>Thu</div>
-                <div>Fri</div>
-                <div>Sat</div>
-            </div>
-            {/* <div className="days">
-            {
-                days.map((i)=>{
-                    if(new Date(date.getFullYear(),date.getMonth(),i).getDay()==0 || new Date(date.getFullYear(),date.getMonth(),i).getDay()==6)
-                {
-                    if(i===new Date().getDate() && date.getMonth() === new Date().getMonth())
-                {
-                    
-                    <div class="today weekends">${i}</div>;
-                    
-                }
-                else{
-                    <div class="weekends">${i}</div>
-                
-                }
-                }
-                else{
-                    if(i===new Date().getDate() && date.getMonth() === new Date().getMonth())
-                {
-                    
-                       <div class="today">${i}</div>
-            
-                }
-                else{
-                <div>${i}</div>
-                }
-                }
-                  })
-              }
-            
-    </div> */}
+            <Weekdays/>
+            <Days prevDays={prevDays} days={days} nextDays={nextDays} date={date}/>
+
         </div>
     </div>
   )
